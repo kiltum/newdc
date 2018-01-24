@@ -1,0 +1,9 @@
+---
+- hosts: centos
+  remote_user: kiltum
+  become: yes
+  become_user: root
+  roles:
+     - centos-bootstrap
+     - centos-hostname
+#     - freeipa

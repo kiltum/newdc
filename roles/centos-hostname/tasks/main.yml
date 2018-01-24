@@ -1,0 +1,24 @@
+---
+# tasks file for hostname
+
+- name: Set Hostname
+  hostname: name="{{ inventory_hostname }}"
+
+# in Amazon Linux
+# - name: Disable AWS cloud hostname. Ok to fail
+#   ignore_errors: yes
+#   lineinfile: "dest=/etc/cloud/cloud.cfg
+#               line='preserve_hostname: true'
+#               state=present"
+
+- name: Get ip adress of machine
+  shell: "ip route get 1 | awk '{print $NF;exit}'"
+  register: ip_out
+
+- set_fact:
+    machine_ip: "{{ ip_out.stdout }}"
+
+- name: Set good /etc/hosts file
+  template:
+    src: hosts.j2
+    dest: /etc/hosts

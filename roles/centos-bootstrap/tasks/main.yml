@@ -1,0 +1,60 @@
+---
+# tasks file for bootstrap-centos
+# installs all what i need to work
+- name: install SELinux bindings
+  yum: name=libselinux-python state=present
+
+- name: switch SELinux to permissive
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: install packages for happy life
+  yum: pkg={{ item }} state=present
+  with_items:
+    - mc
+    - epel-release
+    - ntp
+    - ntpdate
+    - screen
+    - bind-utils
+    - telnet
+    - iptables-services
+    - iptables
+
+- name: ensure that chronyd disbaled
+  service: name=chronyd enabled=no state=stopped
+  ignore_errors: yes
+
+- name: ensure that ntpd enabled
+  service: name=ntpd enabled=yes
+  register: ntpdc
+
+- name: ntpd to stop
+  service: name=ntpd state=stopped
+  when: ntpdc.changed
+
+- name: sync time
+  command: ntpdate pool.ntp.org
+  when: ntpdc.changed
+
+- name: time was synced so start ntpd
+  service: name=ntpd state=started
+  when: ntpdc.changed
+
+- name: be sure firewalld is disabled
+  service: name=firewalld enabled=no
+  ignore_errors: yes
+
+- name: be sure firewalld is stopped
+  service: name=firewalld state=stopped
+  ignore_errors: yes
+
+- name: be sure iptables is enabled
+  service: name=iptables enabled=yes
+
+- name: be sure iptables is run
+  service: name=iptables state=started
+
+- name: Ensure that system is up to-date
+  yum: name=* state=latest
