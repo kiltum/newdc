@@ -1,0 +1,31 @@
+client
+dev tun
+proto udp
+remote vpn.ka12.co 1194
+resolv-retry infinite
+nobind
+persist-key
+persist-tun
+comp-lzo
+verb 3
+key-direction 1
+remote-cert-tls server
+mssfix
+auth-user-pass
+
+<ca>
+ca.crt
+</ca>
+
+<cert>
+client.crt
+</cert>
+
+<key>
+client.key
+</key>
+
+<tls-auth>
+ta.key
+</tls-auth>
+
