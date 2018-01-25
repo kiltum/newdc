@@ -10,8 +10,11 @@ comp-lzo
 verb 3
 key-direction 1
 remote-cert-tls server
-mssfix
+tun-mtu 1400
+mssfix 1360
 auth-user-pass
+mute-replay-warnings
+replay-window 105
 
 <ca>
 ca.crt
