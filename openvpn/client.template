@@ -15,7 +15,7 @@ mssfix 1360
 auth-user-pass
 mute-replay-warnings
 replay-window 105
-
+auth-nocache
 <ca>
 ca.crt
 </ca>
