@@ -1,0 +1,35 @@
+---
+# install docker
+- name: remove old docker if exist
+  yum: pkg={{ item }} state=absent
+  with_items:
+    - docker
+    - docker-common
+    - docker-selinux
+    - docker-engine
+
+- name: install utils for docker
+  yum: pkg={{ item }} state=present
+  with_items:
+    - yum-utils
+    - device-mapper-persistent-data
+    - lvm2
+
+- name: Install docker repo
+  command: "{{item}}"
+  with_items:
+    - 'yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo'
+
+- name: install utils for docker
+  yum: pkg={{ item }} state=present
+  with_items:
+    - docker-ce
+
+- name: Reset iptables to blank slate
+  command: "{{item}}"
+  with_items:
+    - 'iptables -F'
+    - 'iptables-save'
+
+- name: Start docker
+  service: name=docker enabled=yes state=started

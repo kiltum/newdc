@@ -1,7 +1,11 @@
-[centos]
+[main]
 edge.ka12.co ansible_host=edge.ka12.co
 head.ka12.co ansible_host=172.16.100.2
+[docker]
 docker1.ka12.co ansible_host=172.16.100.11
 docker2.ka12.co ansible_host=172.16.100.12
 docker3.ka12.co ansible_host=172.16.100.13
+[centos:children]
+docker
+main
 
