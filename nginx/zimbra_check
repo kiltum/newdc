@@ -1,0 +1,8 @@
+#!/bin/bash
+
+cat /opt/www/chain.pem >> /etc/letsencrypt/live/mail.ka12.co/fullchain.pem 
+scp  /etc/letsencrypt/live/mail.ka12.co/* root@mail:/opt/zimbra/ssl/letsencrypt/
+
+ssh root@mail "chown zimbra:zimbra /opt/zimbra/ssl/letsencrypt/*"
+
+ssh root@mail "runuser -u zimbra /opt/zimbra/bin/zmcertmgr verifycrt comm /opt/zimbra/ssl/letsencrypt/privkey.pem /opt/zimbra/ssl/letsencrypt/cert.pem /opt/zimbra/ssl/letsencrypt/fullchain.pem"

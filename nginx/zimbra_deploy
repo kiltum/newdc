@@ -1,0 +1,7 @@
+#!/bin/bash
+ssh root@mail "runuser -l zimbra -c 'zmcontrol stop'"
+ssh root@mail "cp -a /opt/zimbra/ssl/zimbra /opt/zimbra/ssl/zimbra.`date \"+%Y%m%d\"`"
+ssh root@mail "runuser -u zimbra cp /opt/zimbra/ssl/letsencrypt/privkey.pem /opt/zimbra/ssl/zimbra/commercial/commercial.key"
+ssh root@mail "runuser -u zimbra /opt/zimbra/bin/zmcertmgr deploycrt comm /opt/zimbra/ssl/letsencrypt/cert.pem /opt/zimbra/ssl/letsencrypt/fullchain.pem"
+ssh root@mail "runuser -l zimbra -c '/opt/zimbra/bin/zmcertmgr deploycrt comm /opt/zimbra/ssl/letsencrypt/cert.pem /opt/zimbra/ssl/letsencrypt/fullchain.pem'"
+ssh root@mail "runuser -l zimbra -c 'zmcontrol start'"
